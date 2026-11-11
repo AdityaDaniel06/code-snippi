@@ -1,0 +1,51 @@
+{
+  "title": "Choose Snippi's visual world (safer hand)",
+  "question": "The familiar end of the spectrum: three grounded directions and the category standard. Pick one.",
+  "options": [
+    {
+      "id": "swiss",
+      "kind": "grounded",
+      "label": "Swiss Grid",
+      "lineage": "International Typographic Style: Müller-Brockmann posters and Swiss corporate manuals",
+      "thesis": "Precision as luxury: one heavy grotesk, a strict grid, and the code panel treated as the photograph.",
+      "palette": ["#f2f1ee", "#111111", "#e1251b", "#1a1a1a", "#f7f7f5"],
+      "materials": ["strict twelve-column grid", "one heavy grotesk at huge scale", "flat signal red used only for actions", "code panels cropped square like photographs"],
+      "viewport": "A huge flush-left headline over most of the screen width, with a large real snippet panel pinned to the grid's right columns and one red sign-up button. Dark theme inverts to near-black with the same red.",
+      "risk": "Reads as generic minimalism if the scale contrast is timid; it depends on type set really large and spacing kept strict."
+    },
+    {
+      "id": "reference",
+      "kind": "grounded",
+      "label": "The Reference Manual",
+      "lineage": "Cloth-bound programming references and their running heads, margins and marginalia",
+      "thesis": "Your library as a well-made reference book: each snippet an entry with its own head, note and code.",
+      "palette": ["#1e2a44", "#f4f2ec", "#8c2f2b", "#2b2b2b", "#d9d3c4"],
+      "materials": ["navy book cloth with a blind-stamped title", "book-paper pages with wide margins", "running heads and margin notes", "an oxblood ribbon marker as the accent"],
+      "viewport": "A navy cloth cover field holding the Snippi title, opening to a two-page spread: an entry heading and description on the left page, the code on the right.",
+      "risk": "Book paper drifts toward the cream-and-serif look generated sites default to, and a spread layout is harder to make work on phones."
+    },
+    {
+      "id": "dymo",
+      "kind": "grounded",
+      "label": "Label Maker",
+      "lineage": "Embossed Dymo label tape on drawers, cables and toolboxes",
+      "thesis": "Name it, stick it on, find it later: every snippet title is a strip of embossed tape.",
+      "palette": ["#141414", "#f5f5f2", "#d8231f", "#1f4fa3", "#ffffff"],
+      "materials": ["raised plastic label tape in black, red and blue", "white embossed letters", "a plain graphite ground"],
+      "viewport": "The headline punched out as three strips of tape across the screen, with the sign-up button as a red strip and a live demo where you type a title and watch it emboss.",
+      "risk": "The most playful of the three; done loudly it reads as a novelty gimmick rather than premium."
+    }
+  ],
+  "buildPath": { "value": "code" },
+  "canon": true,
+  "canonCard": {
+    "kind": "canon",
+    "label": "The category standard",
+    "thesis": "Developer-tool SaaS at the craft level of Linear, Raycast and Vercel.",
+    "palette": ["#0a0a0b", "#ededef", "#6e6e76", "#3e7bfa"],
+    "materials": ["neutral near-black and white", "one accent", "large crops of the real dashboard and editor", "keyboard-first micro-interactions"],
+    "viewport": "Tight headline and sign-up button over a large crop of the real Snippi dashboard and editor, with short sections that each show one real interface fragment.",
+    "risk": "Indistinguishable from every other developer tool by design."
+  },
+  "steer": true
+}

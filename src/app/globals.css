@@ -1,0 +1,392 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ------------------------------------------------------------------
+   Tokens. Neutral graphite, one signal-orange accent, tone steps for
+   separation. Dark is the default; light mirrors every role.
+   ------------------------------------------------------------------ */
+:root,
+:root[data-theme="dark"] {
+  --bg: #0b0b0c;
+  --surface-1: #121214;
+  --surface-2: #19191c;
+  --surface-3: #232327;
+  --surface-hover: #1e1e22;
+  --line: rgba(255, 255, 255, 0.07);
+  --line-strong: rgba(255, 255, 255, 0.13);
+
+  --ink: #f2f2f3;
+  --ink-2: #a3a3ab;
+  --ink-3: #8a8a93;
+
+  --accent: #ff5a1f;
+  --accent-hover: #ff7340;
+  --accent-ink: #0b0b0c;
+  --accent-soft: rgba(255, 90, 31, 0.14);
+
+  --danger: #f2554a;
+  --danger-soft: rgba(242, 85, 74, 0.12);
+  --success: #3fb67a;
+
+  /* Code tokens, shared by the static highlighter and Monaco */
+  --code-bg: #0e0e10;
+  --code-ink: #d7d7dc;
+  --code-gutter: #4a4a52;
+  --tk-keyword: #ff8a5c;
+  --tk-string: #9fd38a;
+  --tk-number: #e9c46a;
+  --tk-comment: #6a6a73;
+  --tk-fn: #7cc4f0;
+
+  --shadow-float: 0 18px 50px -12px rgba(0, 0, 0, 0.6), 0 4px 12px -4px rgba(0, 0, 0, 0.4);
+
+  color-scheme: dark;
+}
+
+:root[data-theme="light"] {
+  --bg: #f5f5f6;
+  --surface-1: #ffffff;
+  --surface-2: #ececee;
+  --surface-3: #e2e2e5;
+  --surface-hover: #f0f0f2;
+  --line: rgba(11, 11, 12, 0.08);
+  --line-strong: rgba(11, 11, 12, 0.15);
+
+  --ink: #0b0b0c;
+  --ink-2: #55555d;
+  --ink-3: #6b6b73;
+
+  --accent: #f0501a;
+  --accent-hover: #ff6430;
+  --accent-ink: #0b0b0c;
+  --accent-soft: rgba(240, 80, 26, 0.12);
+
+  --danger: #d23a2f;
+  --danger-soft: rgba(210, 58, 47, 0.1);
+  --success: #23905a;
+
+  --code-bg: #f6f6f7;
+  --code-ink: #26262b;
+  --code-gutter: #b3b3ba;
+  --tk-keyword: #c2410c;
+  --tk-string: #3f7d2a;
+  --tk-number: #a06200;
+  --tk-comment: #9a9aa2;
+  --tk-fn: #1f6fb2;
+
+  --shadow-float: 0 18px 50px -14px rgba(20, 20, 30, 0.22), 0 4px 12px -4px rgba(20, 20, 30, 0.1);
+
+  color-scheme: light;
+}
+
+/* ------------------------------------------------------------------ */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: auto;
+  -webkit-text-size-adjust: 100%;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  min-height: 100dvh;
+  overflow-x: hidden;
+  font-feature-settings: "ss01", "cv11";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+a {
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 1px;
+}
+
+/* Scrollbars themed from the palette, not the browser default */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--surface-3) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--surface-3);
+  border-radius: 999px;
+  border: 3px solid var(--bg);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ink-3);
+}
+
+/* ------------------------------------------------------------------ */
+
+@layer components {
+  .container-app {
+    @apply mx-auto w-full max-w-[1200px] px-4 sm:px-6 lg:px-8;
+  }
+
+  .container-page {
+    @apply mx-auto w-full max-w-[1360px] px-4 sm:px-8 lg:px-12;
+  }
+
+  /* Display type: poster scale on the landing page only */
+  .display {
+    font-weight: 650;
+    letter-spacing: -0.04em;
+    line-height: 0.95;
+    text-wrap: balance;
+  }
+
+  .h-section {
+    font-weight: 650;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    text-wrap: balance;
+  }
+
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Buttons: one shape, 8px corners, flat fills */
+  .btn {
+    @apply relative inline-flex select-none items-center justify-center gap-2 whitespace-nowrap rounded-lg font-medium;
+    height: 2.5rem;
+    padding: 0 1rem;
+    font-size: 0.9375rem;
+    transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease,
+      transform 120ms ease;
+  }
+
+  .btn:active:not(:disabled) {
+    transform: scale(0.97);
+  }
+
+  .btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
+
+  .btn-sm {
+    height: 2rem;
+    padding: 0 0.75rem;
+    font-size: 0.875rem;
+  }
+
+  .btn-lg {
+    height: 3.25rem;
+    padding: 0 1.5rem;
+    font-size: 1.0625rem;
+    border-radius: 6px;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: var(--accent-ink);
+    font-weight: 600;
+  }
+
+  .btn-primary:hover:not(:disabled) {
+    background: var(--accent-hover);
+  }
+
+  .btn-secondary {
+    background: var(--surface-2);
+    color: var(--ink);
+  }
+
+  .btn-secondary:hover:not(:disabled) {
+    background: var(--surface-3);
+  }
+
+  .btn-quiet {
+    background: transparent;
+    color: var(--ink-2);
+  }
+
+  .btn-quiet:hover:not(:disabled) {
+    background: var(--surface-2);
+    color: var(--ink);
+  }
+
+  .btn-danger {
+    background: var(--danger-soft);
+    color: var(--danger);
+  }
+
+  .btn-danger:hover:not(:disabled) {
+    background: var(--danger);
+    color: #fff;
+  }
+
+  .btn-icon {
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
+  }
+
+  /* Fields */
+  .field {
+    @apply w-full rounded-lg outline-none;
+    height: 2.75rem;
+    padding: 0 0.875rem;
+    font-size: 0.9375rem;
+    background: var(--surface-1);
+    color: var(--ink);
+    border: 1px solid var(--line-strong);
+    transition: border-color 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+  }
+
+  .field::placeholder {
+    color: var(--ink-3);
+  }
+
+  .field:hover {
+    border-color: var(--ink-3);
+  }
+
+  .field:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft); /* taste-skill-ignore: focus ring, not at rest */
+  }
+
+  .field[aria-invalid="true"] {
+    border-color: var(--danger);
+  }
+
+  .label {
+    @apply mb-2 block text-sm font-medium;
+    color: var(--ink);
+  }
+
+  .panel {
+    background: var(--surface-1);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+  }
+
+  .kbd {
+    @apply inline-grid place-items-center rounded-md px-1.5 font-sans text-[11px] font-medium;
+    min-width: 1.375rem;
+    height: 1.375rem;
+    background: var(--surface-2);
+    color: var(--ink-2);
+    border: 1px solid var(--line);
+  }
+
+  .swatch {
+    @apply inline-block shrink-0 rounded-[3px];
+    width: 0.5rem;
+    height: 0.5rem;
+  }
+
+  /* Static code (previews and the landing fragments) */
+  .code-block {
+    font-family: var(--font-geist-mono), ui-monospace, monospace;
+    font-size: 0.8125rem;
+    line-height: 1.7;
+    color: var(--code-ink);
+    tab-size: 2;
+  }
+
+  .tk-k { color: var(--tk-keyword); }
+  .tk-s { color: var(--tk-string); }
+  .tk-n { color: var(--tk-number); }
+  .tk-c { color: var(--tk-comment); font-style: italic; }
+  .tk-f { color: var(--tk-fn); }
+
+  /* Language identity at scale: a flat tone step mixed from the snippet's
+     language colour (set as --lang). No gradient, no glow: the swatch, grown
+     into a surface. Dark needs a stronger mix to read against graphite. */
+  .lang-band {
+    background: color-mix(in srgb, var(--lang, var(--accent)) 9%, var(--bg));
+  }
+
+  .lang-bar {
+    background: color-mix(in srgb, var(--lang, var(--accent)) 11%, var(--code-bg));
+  }
+
+  :root[data-theme="dark"] .lang-band {
+    background: color-mix(in srgb, var(--lang, var(--accent)) 13%, var(--bg));
+  }
+
+  :root[data-theme="dark"] .lang-bar {
+    background: color-mix(in srgb, var(--lang, var(--accent)) 14%, var(--code-bg));
+  }
+
+  .skeleton {
+    background: var(--surface-2);
+    border-radius: 0.375rem;
+    animation: skeleton-pulse 1.4s ease-in-out infinite;
+  }
+}
+
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes caret-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+.caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  vertical-align: -0.2em;
+  background: var(--accent);
+  animation: caret-blink 1s steps(1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

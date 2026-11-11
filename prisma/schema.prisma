@@ -1,0 +1,103 @@
+// Prisma schema — Snippi
+// Learn more: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  // Pooled connection (PgBouncer) used by the app at runtime.
+  url       = env("DATABASE_URL")
+  // Direct connection used by Prisma Migrate / introspection.
+  directUrl = env("DIRECT_URL")
+}
+
+/// Visibility of a snippet.
+enum Visibility {
+  PRIVATE
+  PUBLIC
+}
+
+/// Application user / account.
+model User {
+  id        Int       @id @default(autoincrement())
+  email     String    @unique
+  name      String
+  password  String
+  bio       String?
+  avatarUrl String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  snippets     Snippet[]
+  sharedWithMe SnippetShare[]
+}
+
+/// A saved code snippet belonging to a user.
+model Snippet {
+  id          Int          @id @default(autoincrement())
+  title       String
+  description String?
+  code        String
+  language    String       @default("plaintext")
+  visibility  Visibility   @default(PRIVATE)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  userId      Int
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  tags        SnippetTag[]
+  shares      SnippetShare[]
+
+  @@index([userId])
+  @@index([language])
+  @@index([visibility])
+}
+
+/// A reusable label that can be attached to many snippets.
+model Tag {
+  id        Int          @id @default(autoincrement())
+  name      String       @unique
+  createdAt DateTime     @default(now())
+
+  snippets  SnippetTag[]
+}
+
+/// Join table implementing the many-to-many relation between snippets and tags.
+model SnippetTag {
+  snippetId Int
+  tagId     Int
+
+  snippet   Snippet  @relation(fields: [snippetId], references: [id], onDelete: Cascade)
+  tag       Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  assignedAt DateTime @default(now())
+
+  @@id([snippetId, tagId])
+  @@index([tagId])
+}
+
+/// Access level granted when a snippet is shared.
+enum SharePermission {
+  VIEW
+  EDIT
+}
+
+/// Grants one registered user access to someone else's snippet. Only the
+/// owner shares, so the sharer is always the snippet's owner (snippet.userId).
+model SnippetShare {
+  id         Int             @id @default(autoincrement())
+  snippetId  Int
+  userId     Int             // the recipient
+  permission SharePermission @default(VIEW)
+  createdAt  DateTime        @default(now())
+  updatedAt  DateTime        @updatedAt
+
+  snippet Snippet @relation(fields: [snippetId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([snippetId, userId])
+  @@index([userId])
+}
